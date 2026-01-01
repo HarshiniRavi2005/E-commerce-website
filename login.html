@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLOMOURA - Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #000000, #1a001a);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(156, 39, 176, 0.3);
+            text-align: center;
+            width: 350px;
+            border: 1px solid rgba(156, 39, 176, 0.2);
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            color: #e040fb;
+            text-shadow: 0 0 15px rgba(156, 39, 176, 0.5);
+        }
+
+        p {
+            margin-bottom: 30px;
+            font-size: 18px;
+            opacity: 0.8;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #9c27b0;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s;
+            box-shadow: 0 0 10px rgba(156, 39, 176, 0.4);
+        }
+
+        button:hover {
+            background-color: #ab47bc;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(156, 39, 176, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>GLOMOURA</h1>
+        <p>Luxury Beauty ✨</p>
+        <form id="loginForm">
+            <input type="text" placeholder="Username" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Welcome to GLOMOURA! 🖤💜');
+            window.location.href = 'shop.html';
+        });
+    </script>
+</body>
+</html>

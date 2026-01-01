@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLOMOURA - Shop</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000000;
+            font-family: 'Arial', sans-serif;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #111111;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(156, 39, 176, 0.2);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 36px;
+            color: #e040fb;
+            text-shadow: 0 0 10px rgba(156, 39, 176, 0.3);
+        }
+
+        .logout {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(156, 39, 176, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            color: #e040fb;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .product {
+            background: #1a001a;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(156, 39, 176, 0.2);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .product:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(156, 39, 176, 0.4);
+        }
+
+        .product img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product h3 {
+            color: #e040fb;
+            margin: 10px 0;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #e040fb;
+        }
+
+        .quantity {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        .quantity button {
+            background: #9c27b0;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .quantity input {
+            width: 60px;
+            text-align: center;
+            margin: 0 10px;
+            padding: 8px;
+            background: #333;
+            color: white;
+            border: 1px solid #9c27b0;
+            border-radius: 8px;
+        }
+
+        .add-to-cart {
+            background: #9c27b0;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(156, 39, 176, 0.3);
+        }
+
+        .add-to-cart:hover {
+            background: #ab47bc;
+            box-shadow: 0 0 20px rgba(156, 39, 176, 0.5);
+        }
+
+        #cart {
+            background: #1a001a;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(156, 39, 176, 0.3);
+            margin-top: 50px;
+        }
+
+        #cart h2 {
+            color: #e040fb;
+            text-align: center;
+        }
+
+        #cartItems li {
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            color: #e0e0e0;
+        }
+
+        .total {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: right;
+            color: #e040fb;
+            margin: 20px 0;
+        }
+
+        #checkoutBtn {
+            width: 100%;
+            padding: 15px;
+            background: #9c27b0;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(156, 39, 176, 0.4);
+        }
+
+        #checkoutBtn:hover {
+            background: #ab47bc;
+            box-shadow: 0 0 25px rgba(156, 39, 176, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>GLOMOURA</h1>
+        <div class="logout" onclick="window.location.href='login.html'">Logout</div>
+    </header>
+
+    <div class="container">
+        <h2 style="text-align:center; color:#e040fb;">Our Luxury Collection</h2>
+        <div class="product-grid" id="productGrid"></div>
+
+        <div id="cart">
+            <h2>Your Cart</h2>
+            <ul id="cartItems"></ul>
+            <p class="total">Total: ₹<span id="total">0</span></p>
+            <button id="checkoutBtn">Proceed to Payment</button>
+        </div>
+    </div>
+
+    <script>
+        const products = [
+            { id: 1, name: 'Sunscreen', price: 799, image: 'https://cdn.thewirecutter.com/wp-content/media/2025/03/BEST-FACE-SUNSCREENS-2048px-7343-3x2-1.jpg?auto=webp&quality=75&crop=3:2&width=1024' },
+            { id: 2, name: 'Moisturizer', price: 1199, image: 'https://cdn.thewirecutter.com/wp-content/media/2025/03/BEST-FACIAL-MOISTURIZERS-SUB-2048px-2170.jpg?auto=webp&quality=75&width=1024' },
+            { id: 3, name: 'Primer', price: 899, image: 'https://people.com/thmb/Xe2qLQP5M0BYNHMU-a4_TmTA7z8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():focal(749x0:751x2)/Best-Face-Primers-PO-tout-e9af5491e5e84d42ad8644b7b2f8c4f4.jpg' },
+            { id: 4, name: 'Foundation', price: 1499, image: 'https://media.allure.com/photos/68f662da667eb1522cd46a7d/16:9/w_2560%2Cc_limit/Allure-Winter-Market-Foundations-dry-skin.jpg' },
+            { id: 5, name: 'Concealer', price: 999, image: 'https://m.media-amazon.com/images/I/61yMZcZS52L._AC_UF1000,1000_QL80_.jpg' },
+            { id: 6, name: 'Lipstick', price: 599, image: 'https://akns-images.eonline.com/eol_images/Entire_Site/2023624/rs_1024x759-230724093424-1024-E_Insider_Shop-Best_Lipsticks-gj.jpg?fit=around%7C1024:759&output-quality=90&crop=1024:759;center,top' },
+            { id: 7, name: 'Lipgloss', price: 499, image: 'https://m.media-amazon.com/images/I/81mPG65aFjL._AC_UF1000,1000_QL80_.jpg' },
+            { id: 8, name: 'Lipliner', price: 399, image: 'https://m.media-amazon.com/images/I/71FDmHeeG1L._AC_UF1000,1000_QL80_.jpg' },
+            { id: 9, name: 'Lipbalm', price: 299, image: 'https://cdn.thewirecutter.com/wp-content/media/2024/06/lip-balm-2048px-7081.jpg?auto=webp&quality=75&width=1024' },
+            { id: 10, name: 'Toner', price: 799, image: 'https://media.allure.com/photos/6791156cbfcc98645d52cabc/4:3/w_2664,h_1998,c_limit/Best%20Toners%20for%20Mature%20Skin%20012025%20Product%20Lede.jpg' },
+            { id: 11, name: 'Serum', price: 1799, image: 'https://www.instyle.com/thmb/vw7IpgZmhJq-nvqZ9TT5gswzEkc=/fit-in/1500x1000/filters:no_upscale():max_bytes(150000):strip_icc()/ins-beauty-joseon-calming-serum-green-tea-panthenol-ahuang-comp-2-42dc7a5f1e6b496dbcc8872e31bb2b22.jpeg' },
+            { id: 12, name: 'Colour Corrector', price: 899, image: 'https://media.allure.com/photos/6616c38589b12d214bad9c92/16:9/w_2560%2Cc_limit/ALL_4.10_Color-Correction.jpg' },
+            { id: 13, name: 'Eyeshadow', price: 799, image: 'https://static01.nyt.com/images/2019/12/05/fashion/05palettes-1/05palettes-1-articleLarge-v2.jpg?quality=75&auto=webp&disable=upscale' },
+            { id: 14, name: 'Eyeliner', price: 499, image: 'https://cdn.thewirecutter.com/wp-content/media/2025/01/eyeliners-2048px-00153-1.jpg' },
+            { id: 15, name: 'Liquid Highlighter', price: 999, image: 'https://media.allure.com/photos/627aca7b5fde407b09dbb684/16:9/w_2992,h_1683,c_limit/liquid%20highlighter%20lede.png' },
+            { id: 16, name: 'Powder Highlighter', price: 1099, image: 'https://m.media-amazon.com/images/I/61MEzuyfz4L._AC_UF1000,1000_QL80_.jpg' },
+            { id: 17, name: 'Liquid Blush', price: 799, image: 'https://m.media-amazon.com/images/I/61d9yfRLTFL._AC_UF1000,1000_QL80_.jpg' },
+            { id: 18, name: 'Powder Blush', price: 699, image: 'https://www.shutterstock.com/image-photo/closeup-pink-blush-powder-smear-260nw-2540768531.jpg' },
+            { id: 19, name: 'Compact Powder', price: 899, image: 'https://m.media-amazon.com/images/I/61iGVCI9khL._AC_UF1000,1000_QL80_.jpg' },
+            { id: 20, name: 'Mascara', price: 799, image: 'https://cdn.thewirecutter.com/wp-content/media/2024/05/mascaras-2048px-3562-3x2-1.jpg?auto=webp&quality=75&crop=4:3,smart&width=1024' },
+            { id: 21, name: 'Setting Spray', price: 999, image: 'https://www.byrdie.com/thmb/TrJwWkuhwXOxcCzSkAWPC1QH98Q=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/byr-waterproof-setting-sprays-tout-71a7b905cc7d4528a65928ee3cbf6646.jpg' },
+            { id: 22, name: 'Hair Mist', price: 1199, image: 'https://www.shutterstock.com/image-photo/hair-mist-application-on-ends-260nw-2633900909.jpg' },
+            { id: 23, name: 'Body Mist', price: 899, image: 'https://assets.teenvogue.com/photos/665a021a83f5ccefca889dc7/4:3/w_3600,h_2700,c_limit/TEVOG_5.30_Best-Body-Mists.jpg' },
+            { id: 24, name: 'Perfume', price: 2499, image: 'https://img.freepik.com/premium-photo/close-up-beauty-products-table_1048944-14961050.jpg?semt=ais_hybrid&w=740&q=80' },
+            { id: 25, name: 'Nail Polish', price: 299, image: 'https://thumbs.dreamstime.com/b/female-hands-hold-collection-vibrant-nail-polishes-against-pink-backdrop-assorted-enamel-shades-include-purple-red-coral-female-410801641.jpg' },
+            { id: 26, name: 'Nail Remover', price: 199, image: 'https://m.media-amazon.com/images/S/aplus-media-library-service-media/b6e3ef42-3021-4247-8f06-f43362ceb194.__CR0,0,970,600_PT0_SX970_V1___.jpg' }
+        ];
+
+        let cart = [];
+
+        const productGrid = document.getElementById('productGrid');
+        products.forEach(product => {
+            const div = document.createElement('div');
+            div.classList.add('product');
+            div.innerHTML = `
+                <img src="${product.image}" alt="${product.name}">
+                <div class="product-info">
+                    <h3>${product.name}</h3>
+                    <p class="price">₹${product.price}</p>
+                    <div class="quantity">
+                        <button class="minus">-</button>
+                        <input type="number" value="1" min="1">
+                        <button class="plus">+</button>
+                    </div>
+                    <button class="add-to-cart" data-id="${product.id}">Add to Cart</button>
+                </div>
+            `;
+            productGrid.appendChild(div);
+
+            const minus = div.querySelector('.minus');
+            const plus = div.querySelector('.plus');
+            const input = div.querySelector('input');
+            minus.addEventListener('click', () => { if (input.value > 1) input.value--; });
+            plus.addEventListener('click', () => input.value++);
+
+            div.querySelector('.add-to-cart').addEventListener('click', () => {
+                const qty = parseInt(input.value);
+                const existing = cart.find(item => item.id === product.id);
+                if (existing) {
+                    existing.quantity += qty;
+                } else {
+                    cart.push({ ...product, quantity: qty });
+                }
+                updateCart();
+                alert(`${product.name} x${qty} added to cart! 🛍️`);
+            });
+        });
+
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${item.name} × ${item.quantity}</span><span>₹${item.price * item.quantity}</span>`;
+                cartItems.appendChild(li);
+                total += item.price * item.quantity;
+            });
+            document.getElementById('total').textContent = total;
+        }
+
+        document.getElementById('checkoutBtn').addEventListener('click', () => {
+            if (cart.length === 0) {
+                alert('Your cart is empty! 😊');
+                return;
+            }
+            alert(`Payment Successful! 🎉\nTotal Amount: ₹${document.getElementById('total').textContent}\nThank you for shopping with GLOMOURA! 🖤💜`);
+            cart = [];
+            updateCart();
+        });
+    </script>
+</body>
+</html>
